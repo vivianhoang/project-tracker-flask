@@ -30,7 +30,19 @@ def get_student():
 
     github = request.args.get('github', 'jhacks')
     first, last, github = hackbright.get_student_by_github(github)
+
     return render_template("student_info.html", first=first, last=last, github=github)
+
+
+@app.route("/project")
+def get_project_listing():
+    """Show project information for request project"""
+
+    title = request.args.get('title')
+    rows = hackbright.get_student_listing_for_project(title)
+    first_name, last_name, grade = rows
+
+    return render_template("project_info.html", rows=rows, title=title, description=description)
 
 
 if __name__ == "__main__":

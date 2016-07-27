@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head>
+    <title>Project Info</title>
+</head>
+<body>
+
+<p>{{ title }}: {{ description }}</p>
+
+<ul>
+    {% for row in rows %}
+    <li>{{ row[0] }} {{ row[1] }}: {{ row[3] }}</li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

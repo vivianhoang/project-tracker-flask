@@ -49,15 +49,16 @@ def make_new_student(first_name, last_name, github):
     print "Successfully added student: %s %s" % (first_name, last_name)
 
 
-def get_project_by_title(title):
+def get_project_by_title(title_input):
     """Given a project title, print information about the project."""
 
     QUERY = """
         SELECT title, description, max_grade
         FROM Projects
-        WHERE title = :title
+        WHERE title = :title_substitution
         """
-    db_cursor = db.session.execute(QUERY, {'title': title})
+    #db_cursor is a results object that holds the info our query returns
+    db_cursor = db.session.execute(QUERY, {'title_substitution': title_input})
     row = db_cursor.fetchone()
     print "Title: %s\nDescription: %s\nMax Grade: %d" % (row[0], row[1],
                                                          row[2])
@@ -91,6 +92,21 @@ def get_grade_listing_for_student(first_name, last_name):
         WHERE s.first_name = :first_name AND s.last_name = :last_name
         """
     db_cursor = db.session.execute(QUERY, {'first_name': first_name, 'last_name': last_name})
+    rows = db_cursor.fetchall()
+    return rows
+
+
+def get_student_listing_for_project(title):
+    """Print all students and grades who completed a project."""
+
+    QUERY = """
+        SELECT s.first_name, s.last_name, g.grade
+        FROM Grades AS g
+            LEFT JOIN Students AS s
+            ON g.student_github = s.github
+        WHERE g.title = :title
+        """
+    db_cursor = db.session.execute(QUERY, {'title': title})
     rows = db_cursor.fetchall()
     return rows
 
