@@ -19,10 +19,9 @@ def get_grade_listing_for_student():
     first_name = request.args.get('first_name')
     last_name = request.args.get('last_name')
     rows = hackbright.get_grade_listing_for_student(first_name, last_name)
-    for row in rows:
-        first, last, github, title, grade = row
+    github = rows[0][2]
     
-    return render_template("student_info.html", rows=rows, first=first, last=last, github=github)
+    return render_template("student_info.html", rows=rows, first=first_name, last=last_name, github=github)
 
 
 @app.route("/student-add", methods=['POST'])
